@@ -1,0 +1,7 @@
+= LICENSE for `vaadin-articles`
+Marko Grönroos
+
+Articles in this repository are individually copyright by their authors.
+CC-BY license is required for contributing.
+Articles must be attributed and attributions must be preserved.
+As the articles are based on collaborative writing, derivatives are allowed.

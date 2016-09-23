@@ -1,0 +1,11 @@
+= README for `vaadin-articles`
+Marko Grönroos
+
+These are miscellaneous articles in the Articles section of Vaadin Docs.
+
+You must follow all the contribution guidelines for Vaadin Docs, such as with regards to document formatting.
+
+Articles in this repository are individually copyright by their authors.
+CC-BY license is required for contributing.
+Articles must be attributed and attributions must be preserved.
+As the articles are based on collaborative writing, derivatives are allowed.

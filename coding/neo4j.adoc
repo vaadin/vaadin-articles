@@ -1,0 +1,142 @@
+---
+title: Using neo4j with Vaadin
+order: 3
+layout: page
+---
+// Converted from the Wiki by Marko Grönroos on 2016-09-23
+
+= Using neo4j with Vaadin
+
+[.author]
+Sami Ekblad and Henri Paul
+
+[NOTE]
+.Vaadin 7 and 8
+While the article is still mostly applicable for Vaadin 7 and 8, the article and the accompanying demo application was originally written for Vaadin 6, so some of the details work differently.
+The article may be updated later.
+
+The so called http://en.wikipedia.org/wiki/NoSQL[NoSQL databases] are an interesting option to the traditional relation (SQL) databases.
+They provide schemaless data storage which sounds like a good fit with Vaadin's very dynamic way of building web UIs.
+In this article, we try out the neo4j NoSQL database and build a small sample application with Vaadin to see what it means in practice.
+
+http://neo4j.org/[Neo4j] is an embedded https://en.wikipedia.org/wiki/Graph_database[graph database].
+It runs in the same JVM as your application and provides persistent graph store for you application needs.
+As a graph database, it provides the basic set of concepts to work with:
+
+* nodes
+* relationships that connect nodes
+* properties attached to both nodes and relationships
+
+To learn more about neo4j and graph databases in general you should take a look at the intro at http://neo4j.org/
+
+== Integration to a Vaadin Application
+
+When starting we considered two options integrating graph services to an Vaadin application:
+
+. Domain objects using DAO/POJO layer
+. Binding Nodes to https://vaadin.com/api/index.html?com/vaadin/data/Item.html[Item] and directly to Vaadin UI components
+
+You probably notice that the first approach is "the right way" letting application design to focus on the http://en.wikipedia.org/wiki/Domain_model[domain model].
+You work with entity POJOs that persist them into database more or less automatically.
+
+// NOTE link to the neo4j IMDB example missing
+In the sample, we used the approach copied from the neo4j IMDB example, where domain object are interfaces and their implementations are stateless POJOs that persist directly to Neo4J nodes.
+It has the benefit that you can create lightweight POJOs rather freely without worrying about their internal state.
+
+The approach binding nodes directly to UI bypasses the domain layer resulting much less application code. While this might be an interesting option for small applications with very dynamic data model, it usually is better to concentrate on domain model first.
+
+== Sample Addressbook Application
+
+Finding out what it is like to work with Vaadin and neo4j is easiest through an example.
+For this purpose, we put together a small address book sample application.
+
+The application code is available in the https://dev.vaadin.com/browser/svn/incubator/Neo4JSample/[project repository].
+The application is also running at the http://sami.virtuallypreinstalled.com/neo4j[demo site] (no guarantee that it works currently).
+
+In the sample that we build, the generic classes were put to different package, namely `org.vaadin.neo4j`.
+If you wish to create your own application and consider using neo4j as database these classes may be handy.
+
+For the sample, we also created a generic wrapper base object containing all the common storing logic.
+Most importantly, they work around the fact that neo4j nodes do not allow getting/setting null valued properties - a common situation when binding POJOs to Vaadin [interfacename]##Field##s and [classname]#Form# using [classname]#BeanItem# and [classname]#BeanItemContainer#.
+
+Neo4j supports the following data types for properties:
+
+* `boolean` or `boolean[]`
+* `byte` or `byte[]`
+* `short` or `short[]`
+* `int` or `int[]`
+* `long` or `long[]`
+* `float` or `float[]`
+* `double` or `double[]`
+* `char` or `char[]`
+* [classname]#java.lang.String# or [classname]#String[]#
+
+In Vaadin 7, the basic types are directly supported by the Vaadin [classname]#BeanItem#, but we did not use them in the sample. It should be straight forward to instantiate an appropriate [interfacename]#Field# in in the [classname]#FieldFactory# though .
+Only the arrays may be more tricky and probably need you to use [classname]#CustomField#.
+Of course, if you are not using Vaadin's automatic data binding there should be no problem in using them in your application.
+
+== The Domain Model
+
+As suggested in the https://neo4j.com/developer/guide-data-modeling/[Neo4j Design Guide], a service interface was created as a part of the domain model.
+Its purpose is to interact with the domain object and serve as a factory, but it was also used to host some application/domain specific methods and the wrapping functions.
+
+As mentioned earlier, the domain model consist of interfaces that are implemented by lightweight neo4j specific objects.
+You can find the source code for the https://dev.vaadin.com/browser/svn/incubator/Neo4JSample/src/org/vaadin/example/neo4jsample/domain/[domain model] and https://dev.vaadin.com/browser/svn/incubator/Neo4JSample/src/org/vaadin/example/neo4jsample/neo4j/[their implementations] in the demo sources.
+
+== Binding Data with Strings
+
+Binding Java object to database has typically involved using strings as IDs.
+As they seem to be necessary both in database and UI level we introduced them in an inner interface of each domain model interfaces, like in the https://dev.vaadin.com/browser/svn/incubator/Neo4JSample/src/org/vaadin/example/neo4jsample/domain/Contact.java[Contact] object.
+This way, they can serve both binding to neo4j nodes as well as binding to UI components the fields.
+
+== Binding to Nodes Directly
+
+For the other part of the sample app, the "Graph Browser", we used the direct binding approach.
+You can consider this more or less as a tech demo than a real use case.
+It uses Neo4jItem and Neo4jContainer implementations to bind nodes directly to [classname]#Form# and containers like [classname]#Table#, [classname]#Select#, and [classname]#Tree#.
+These classes should be reusable if you like to try.
+For a starting point, take a look at the https://dev.vaadin.com/browser/svn/incubator/Neo4JSample/src/org/vaadin/example/neo4jsample/GraphBrowser.java[GraphBrowser.java].
+
+== Generalized Transaction Handling
+
+Transactions are good but they can be tricky. In Vaadin where the application and variables live longer you would like to use long logical transactions. However, this might not be a good idea as we are still running in web environment where the http request response cycle counts. You have to take good care of the timeouts and serialization, if you go for this approach.
+
+[NOTE]
+.Vaadin 7 and 8
+The example is outdated in the following part, relying on Vaadin 6.
+In Vaadin 7 and 8, you would do this differently.
+
+// TODO Vaadin 6 stuff
+This sample uses generic transactions bound to HTTP requests threads using the [classname]#HttpServletRequestListener#.
+You can see that in implemented in the https://dev.vaadin.com/browser/svn/incubator/Neo4JSample/src/org/vaadin/example/neo4jsample/Neo4jSampleApplication.java[application class].
+Of course you can use more fine-grained service function approach too if that fits better to your service.
+Just keep in mind that for neo4j access to nodes (read access too) must be inside a transaction.
+
+== Notes Along the Way
+
+Having no schema in your database does not mean that you don't need a domain/data model.
+Creating a separate domain model is a good thing and and mapping POJOs to Nodes as well as to UI components is rather straight-forward.
+
+However, when writing the POJO implementations you quickly notice that this is something that should be automated.
+Using annotations and tools like http://projects.spring.io/spring-roo/[Roo] and/or https://code.google.com/archive/p/jo4neo/[jo4neo] is a good way to continue.
+
+In general, neo4j provides a quick way to implement persistence in Vaadin applications:
+
+* It is small and embedded, which makes it easy to get started with.
+* Graphs are conceptually very intuitive. You can map your application domain to a graph rather intuitively.
+* Less loading/storing code. For most cases you can just work with data when you need and it is automatically persisted for you.
+
+Some things that you should keep in mind though:
+
+* It is an embedded database. If you need something else this might fit your purposes.
+* Serialization: Neo4j NodeProxy instances are not serializable. You have to keep in mind when using them. It does not really matter for smaller applications, but in large applications it requires a systematic approach.
+* Neo4j uses AGPLv3 license that does not meet everyone's requirements.
+
+The sample application is still missing the the use case for search and indexing.
+However, there is a good tutorial about this at https://neo4j.com/developer/guide-data-modeling/[neo4j Data Modeling Guidelines]. This should get you on the right track.
+
+== References
+
+* Neo4j website: http://neo4j.org/
+* Neo4j sample application code: http://dev.vaadin.com/browser/svn/incubator/Neo4JSample/
+* Sample application running: http://sami.virtuallypreinstalled.com/neo4j

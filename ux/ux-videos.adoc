@@ -1,0 +1,51 @@
+---
+title: UX Videos
+order: 1
+layout: page
+---
+// Converted from the Wiki by Marko Grönroos on 2016-09-08
+
+[[articles.ux.videos]]
+= UX Videos
+
+Below is a list of official Vaadin videos on user experience.
+
+The UX Tips videos are presented by the head UX designer at Vaadin, Hannu Salonen.
+
+[[articles.ux.videos.buttons]]
+== UX Tips: Using Buttons the Right Way
+
+video::LmmFqFuowaY[youtube, width=480, height=360]
+
+There are many different styles of buttons, and buttons can be used in different ways, depending on how you theme or place them.
+In this UX Tips video, you will learn to use them the right way.
+
+[[articles.ux.videos.choises]]
+== UX Tips: Making Choises
+
+video::U3hfDjqOlfo[youtube, width=480, height=360]
+
+What component should I use for selections?
+Vaadin's very own Hannu Salonen shares his tips on the topic.
+ComboBox vs native selects, etc.
+Enjoy.
+
+[[articles.ux.videos.radiocheck]]
+== UX Tips: Radio Check
+
+video::ZyQjdY0bxyk[youtube, width=480, height=360]
+
+In this episode of Vaadin UX Tips, we discuss check boxes, radio buttons, labels, and popular hot beverages seasoned with some cool CSS.
+
+[[articles.ux.videos.best-practices]]
+== Vaadin UX Best Practices
+
+video::xXFoJ_rOX8Q[youtube, width=480, height=360]
+
+Join Vaadin's very own Marlon Richert and Rolf Smeds (UX designers @ Vaadin) who will show you some common UX problems in Vaadin apps – and how to easily fix them.
+
+== Vaadin at the University - UX / UI lecture
+
+video::or57nSE_3-w[youtube, width=480, height=360]
+
+Rolf Smeds gives a lecture about UX design with Vaadin.

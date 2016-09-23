@@ -1,0 +1,31 @@
+---
+title: Multi-Tab Applications
+order: 3
+layout: page
+---
+// Converted from the Wiki by Marko Grönroos on 2016-09-08
+
+[[articles.vaadin7.multi-tab-applications]]
+= Creating Multi-Tab Applications
+
+[.author]
+Jens Jansson and John Ahlroos
+
+Every new request to the server gets a new session and UI instance.
+Having the application open in separate tabs or windows means that the instances are totally separate from each others, and thus will not conflict and cause any out of sync or similar issues.
+
+Opening the new tab will open the application into its start page.
+Use URI fragments if you want to open a specific view into the secondary tab.
+You can read the URI fragments in the [methodname]#UI.init()# and decide if you want to show the main view or a specialized view:
+
+[source, java]
+----
+public void init(VaadinRequest request) {
+  String person = request.getParameter("editPerson");
+  if (person == null) {
+    setContent(new MainView());
+  } else {
+    setContent(new EditPersonView(person));
+  }
+}
+----

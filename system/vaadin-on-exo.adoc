@@ -1,0 +1,26 @@
+---
+title: Vaadin on eXo
+order: 1
+layout: page
+---
+// Converted from the Wiki by Marko Grönroos on 2016-09-08
+
+[[articles.system.vaadin-on-exo]]
+= Deploying Vaadin portlets on eXo platform
+
+[.author]
+Jonatan Kronqvist, Sami Ekblad, and Leif Åstrand
+
+[WARNING]
+These instructions are based on previous versions of Vaadin Framework and eXo platform.
+The same principle still applies, but the exact details might vary.
+
+There are two things you need to do to deploy Vaadin portlets on eXo platform:
+
+. Extract the [filename]#VAADIN# directory from the Vaadin JAR and place it in [filename]#bin/tomcat6-bundle/webapps/ROOT/html#.
+
+** You will have to create the [filename]#html# subdirectory.
+
+. Deploy your portlets in [filename]#bin/tomcat6-bundle/webapps#.
+
+When the files are in place you can refresh the portlets from eXo's admin page after which the portlet(s) will be available to users.

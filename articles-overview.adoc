@@ -1,0 +1,39 @@
+---
+title: Overview of Articles
+order: 1
+layout: page
+---
+
+= Overview of Articles
+
+In this section, we present a collection of technical articles dealing with different aspects of Vaadin.
+Some of the articles may cover same topics as the product documentation.
+Usually they take a different angle, more as practical tutorials.
+
+The articles were originally written in the Vaadin Wiki.
+The wiki is currently disabled.
+You will be able to contribute through GitHub at some point.
+
+*General*::
+  General articles about Vaadin, integration experiences, and such.
+
+*Coding*::
+  Tips, instructions, and tutorials about a wide variety of topics.
+
+////
+*Add-ons*::
+  Instructions for some community add-ons available in Vaadin Directory.
+////
+
+*System*::
+  Information about using Vaadin in different server and cloud platforms, as well as browsers.
+
+*Vaadin 7*::
+  Mini-tutorials for various aspects in Vaadin 7.
+  Most of the topics are covered in the Framework product documentation, but many articles give a deeper picture of what is going on and how you can deal with special cases.
+
+*UX*::
+  Articles on user experience and user interface design
+
+*Theming*::
+  Tips, tricks, and HOWTOs related to styling Vaadin components and building Vaadin themes.
